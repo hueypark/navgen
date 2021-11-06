@@ -1,12 +1,11 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
-#include "NavMeshGen.h"
+#include "NavMeshGenModule.h"
 
 #define LOCTEXT_NAMESPACE "FNavMeshGenModule"
 
 void FNavMeshGenModule::StartupModule()
 {
-	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
+	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin
+	// file per-module
 }
 
 void FNavMeshGenModule::ShutdownModule()
@@ -16,5 +15,5 @@ void FNavMeshGenModule::ShutdownModule()
 }
 
 #undef LOCTEXT_NAMESPACE
-	
+
 IMPLEMENT_MODULE(FNavMeshGenModule, NavMeshGen)
