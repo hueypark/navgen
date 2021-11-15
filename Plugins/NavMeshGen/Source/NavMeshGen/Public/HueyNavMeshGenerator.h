@@ -10,6 +10,9 @@ public:
 	// 생성자
 	FHueyNavMeshGenerator(AHueyNavMesh& ownerNavMesh);
 
+	// 초기화합니다.
+	void Init();
+
 	// 모두 리빌드
 	virtual bool RebuildAll() override;
 
@@ -21,6 +24,10 @@ public:
 
 	// 변경된 부분만 리빌드
 	virtual void RebuildDirtyAreas(const TArray<FNavigationDirtyArea>& DirtyAreas) override;
+
+private:
+	// 네비게이션 바운드를 갱신합니다.
+	void _UpdateNavigationBounds();
 
 private:
 	// 생성기를 소유한 내비게이션 메쉬

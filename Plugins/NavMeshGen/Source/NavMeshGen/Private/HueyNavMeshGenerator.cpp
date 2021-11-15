@@ -7,12 +7,26 @@ FHueyNavMeshGenerator::FHueyNavMeshGenerator(AHueyNavMesh& ownerNavMesh) : m_own
 {
 }
 
+void FHueyNavMeshGenerator::Init()
+{
+	_UpdateNavigationBounds();
+}
+
 bool FHueyNavMeshGenerator::RebuildAll()
 {
 	return true;
 }
 
 void FHueyNavMeshGenerator::OnNavigationBoundsChanged()
+{
+	_UpdateNavigationBounds();
+}
+
+void FHueyNavMeshGenerator::RebuildDirtyAreas(const TArray<FNavigationDirtyArea>& DirtyAreas)
+{
+}
+
+void FHueyNavMeshGenerator::_UpdateNavigationBounds()
 {
 	const UNavigationSystemV1* navSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(m_ownerNavMesh.GetWorld());
 	if (!navSys)
@@ -46,10 +60,6 @@ void FHueyNavMeshGenerator::OnNavigationBoundsChanged()
 			m_navBounds.Add(m_totalNavBound);
 		}
 	}
-}
-
-void FHueyNavMeshGenerator::RebuildDirtyAreas(const TArray<FNavigationDirtyArea>& DirtyAreas)
-{
 }
 
 void FHueyNavMeshGenerator::TickAsyncBuild(float DeltaSeconds)

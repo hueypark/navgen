@@ -18,7 +18,12 @@ void AHueyNavMesh::ConditionalConstructGenerator()
 	const bool bRequiresGenerator = SupportsRuntimeGeneration() || !world->IsGameWorld();
 	if (bRequiresGenerator)
 	{
-		NavDataGenerator = MakeShared<FHueyNavMeshGenerator, ESPMode::ThreadSafe>(*this);
+		TSharedPtr<FHueyNavMeshGenerator, ESPMode::ThreadSafe> generator =
+			MakeShared<FHueyNavMeshGenerator, ESPMode::ThreadSafe>(*this);
+
+		generator->Init();
+
+		NavDataGenerator = generator;
 
 		UNavigationSystemV1* navSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(world);
 		if (navSys)
