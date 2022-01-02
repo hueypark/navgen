@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AI/NavDataGenerator.h"
+#include "HueyNavHeightfield.h"
 
 class AHueyNavMesh;
 
@@ -38,4 +39,14 @@ private:
 
 	// 네비게이션 구역들
 	TNavStatArray<FBox> m_navBounds;
+
+	// 하이트필드
+	HueyNavHeightfield m_heightfield;
+
+private:
+	// 타일 사이즈
+	static const float s_tileSize;
+
+	// 정수형 타일 사이즈
+	static const int32 s_tileSizeInt;
 };

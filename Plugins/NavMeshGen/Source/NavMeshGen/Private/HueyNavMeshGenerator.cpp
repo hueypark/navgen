@@ -1,5 +1,6 @@
 #include "HueyNavMeshGenerator.h"
 
+#include "DrawDebugHelpers.h"
 #include "HueyNavMesh.h"
 #include "NavigationSystem.h"
 
@@ -14,6 +15,41 @@ void FHueyNavMeshGenerator::Init()
 
 bool FHueyNavMeshGenerator::RebuildAll()
 {
+	UWorld* world = m_ownerNavMesh.GetWorld();
+	if (!world)
+	{
+		return false;
+	}
+
+	float minX = m_totalNavBound.Min.X;
+	float maxX = m_totalNavBound.Max.X;
+	float minY = m_totalNavBound.Min.Y;
+	float maxY = m_totalNavBound.Max.Y;
+
+	FHitResult hitResult;
+	float top = 10000.0f;
+	float bottom = 0.0f;
+	FVector start(0.0f, 0.0f, top);
+	FVector end(0.0f, 0.0f, bottom);
+	for (float x = minX; x <= maxX; x += s_tileSize)
+	{
+		for (float y = minY; y <= maxY; y += s_tileSize)
+		{
+			start.X = x;
+			start.Y = y;
+			end.X = x;
+			end.Y = y;
+
+			FCollisionShape collisionShape =
+				FCollisionShape::MakeBox(FVector(s_tileSize * 0.5f, s_tileSize * 0.5f, .0f));
+			if (world->SweepSingleByChannel(
+					hitResult, start, end, FQuat::Identity, ECollisionChannel::ECC_WorldStatic, collisionShape))
+			{
+				m_heightfield.Add(int32(x), int32(y), hitResult.ImpactPoint.Z);
+			}
+		}
+	}
+
 	return true;
 }
 
@@ -65,3 +101,7 @@ void FHueyNavMeshGenerator::_UpdateNavigationBounds()
 void FHueyNavMeshGenerator::TickAsyncBuild(float DeltaSeconds)
 {
 }
+
+const float FHueyNavMeshGenerator::s_tileSize = 1000.0f;
+
+const int32 FHueyNavMeshGenerator::s_tileSizeInt = (int32)(s_tileSize);
