@@ -3,5 +3,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 
 bool GraphTest::RunTest(const FString& Parameters)
 {
-	return true;
+	AddError(FString::Printf(TEXT("Error!")));
+
+	return false;
 }
