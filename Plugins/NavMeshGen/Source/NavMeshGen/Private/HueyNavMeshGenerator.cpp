@@ -64,6 +64,9 @@ void FHueyNavMeshGenerator::OnNavigationBoundsChanged()
 
 void FHueyNavMeshGenerator::RebuildDirtyAreas(const TArray<FNavigationDirtyArea>& DirtyAreas)
 {
+	// TODO: 변경된 부분만 재계산 하게 개선
+
+	RebuildAll();
 }
 
 float FHueyNavMeshGenerator::GetTileSize()
