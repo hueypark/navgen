@@ -11,6 +11,9 @@ class AHueyNavMesh : public ANavigationData
 	GENERATED_BODY()
 
 public:
+	// 생성자
+	AHueyNavMesh();
+
 	// 네비게이션 데이터를 추가합니다.
 	void AddNavData(const int32 x, const int32 y, const float height);
 
@@ -28,6 +31,10 @@ public:
 
 	// 네비게이션 메시 생성이 종료될 떄 호출됩니다.
 	virtual void OnNavMeshGenerationFinished();
+
+public:
+	// 경로를 찾습니다.
+	static FPathFindingResult FindPath(const FNavAgentProperties& agentProperties, const FPathFindingQuery& query);
 
 private:
 	// 하이트필드

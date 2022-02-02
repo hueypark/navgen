@@ -3,8 +3,17 @@
 #include "AI/NavDataGenerator.h"
 #include "HueyNavMeshGenerator.h"
 #include "HueyNavRenderingComponent.h"
+#include "NavMesh/NavMeshPath.h"
 #include "NavMesh/NavMeshRenderingComponent.h"
 #include "NavigationSystem.h"
+
+AHueyNavMesh::AHueyNavMesh()
+{
+	if (HasAnyFlags(RF_ClassDefaultObject) == false)
+	{
+		FindPathImplementation = FindPath;
+	}
+}
 
 void AHueyNavMesh::AddNavData(const int32 x, const int32 y, const float height)
 {
@@ -62,4 +71,40 @@ void AHueyNavMesh::OnNavMeshGenerationFinished()
 	}
 
 	RenderingComp->MarkRenderStateDirty();
+}
+
+FPathFindingResult AHueyNavMesh::FindPath(const FNavAgentProperties& agentProperties, const FPathFindingQuery& query)
+{
+	FPathFindingResult result(ENavigationQueryResult::Error);
+
+	const ANavigationData* self = query.NavData.Get();
+	check(Cast<const AHueyNavMesh>(self));
+
+	FNavigationPath* navPath = query.PathInstanceToFill.Get();
+	FNavMeshPath* navMeshPath = navPath ? navPath->CastPath<FNavMeshPath>() : nullptr;
+
+	if (navMeshPath)
+	{
+		result.Path = query.PathInstanceToFill;
+		navMeshPath->ResetForRepath();
+	}
+	else
+	{
+		result.Path = self->CreatePathInstance<FNavMeshPath>(query);
+		navPath = result.Path.Get();
+		navMeshPath = navPath ? navPath->CastPath<FNavMeshPath>() : nullptr;
+	}
+
+	if (navMeshPath)
+	{
+		navMeshPath->ApplyFlags(query.NavDataFlags);
+
+		result.Path->GetPathPoints().Add(FNavPathPoint(FVector(query.StartLocation)));
+		result.Path->GetPathPoints().Add(FNavPathPoint(FVector(query.EndLocation)));
+	}
+
+	result.Path->MarkReady();
+	result.Result = ENavigationQueryResult::Success;
+
+	return result;
 }
