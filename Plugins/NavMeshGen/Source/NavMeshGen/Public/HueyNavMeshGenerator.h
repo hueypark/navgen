@@ -1,7 +1,6 @@
 #pragma once
 
 #include "AI/NavDataGenerator.h"
-#include "HueyNavHeightfield.h"
 
 class AHueyNavMesh;
 
@@ -26,6 +25,10 @@ public:
 	// 변경된 부분만 리빌드
 	virtual void RebuildDirtyAreas(const TArray<FNavigationDirtyArea>& DirtyAreas) override;
 
+public:
+	// 타일 사이즈를 반환합니다.
+	static float GetTileSize();
+
 private:
 	// 네비게이션 바운드를 갱신합니다.
 	void _UpdateNavigationBounds();
@@ -39,9 +42,6 @@ private:
 
 	// 네비게이션 구역들
 	TNavStatArray<FBox> m_navBounds;
-
-	// 하이트필드
-	HueyNavHeightfield m_heightfield;
 
 private:
 	// 타일 사이즈

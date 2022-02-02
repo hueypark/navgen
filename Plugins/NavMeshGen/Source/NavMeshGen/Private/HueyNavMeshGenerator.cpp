@@ -15,6 +15,8 @@ void FHueyNavMeshGenerator::Init()
 
 bool FHueyNavMeshGenerator::RebuildAll()
 {
+	m_ownerNavMesh.ClearNavData();
+
 	UWorld* world = m_ownerNavMesh.GetWorld();
 	if (!world)
 	{
@@ -45,7 +47,7 @@ bool FHueyNavMeshGenerator::RebuildAll()
 			if (world->SweepSingleByChannel(
 					hitResult, start, end, FQuat::Identity, ECollisionChannel::ECC_WorldStatic, collisionShape))
 			{
-				m_heightfield.Add(int32(x), int32(y), hitResult.ImpactPoint.Z);
+				m_ownerNavMesh.AddNavData(int32(x), int32(y), hitResult.ImpactPoint.Z);
 			}
 		}
 	}
@@ -60,6 +62,11 @@ void FHueyNavMeshGenerator::OnNavigationBoundsChanged()
 
 void FHueyNavMeshGenerator::RebuildDirtyAreas(const TArray<FNavigationDirtyArea>& DirtyAreas)
 {
+}
+
+float FHueyNavMeshGenerator::GetTileSize()
+{
+	return s_tileSize;
 }
 
 void FHueyNavMeshGenerator::_UpdateNavigationBounds()

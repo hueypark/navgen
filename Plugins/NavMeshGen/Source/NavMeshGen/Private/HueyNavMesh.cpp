@@ -6,6 +6,16 @@
 #include "NavMesh/NavMeshRenderingComponent.h"
 #include "NavigationSystem.h"
 
+void AHueyNavMesh::AddNavData(const int32 x, const int32 y, const float height)
+{
+	m_heightfield.Add(x, y, height);
+}
+
+void AHueyNavMesh::ClearNavData()
+{
+	m_heightfield.Clear();
+}
+
 void AHueyNavMesh::ConditionalConstructGenerator()
 {
 	if (NavDataGenerator.IsValid())
@@ -37,4 +47,9 @@ void AHueyNavMesh::ConditionalConstructGenerator()
 UPrimitiveComponent* AHueyNavMesh::ConstructRenderingComponent()
 {
 	return NewObject<UHueyNavRenderingComponent>(this, TEXT("NavRenderingComp"), RF_Transient);
+}
+
+const HueyNavHeightfield& AHueyNavMesh::GetHeightField() const
+{
+	return m_heightfield;
 }

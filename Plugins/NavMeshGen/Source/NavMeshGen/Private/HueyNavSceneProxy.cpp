@@ -23,11 +23,5 @@ void FHueyNavSceneProxy::SetData(const FHueyNavSceneProxyData& data)
 {
 	m_data = data;
 
-	Boxes.Empty();
-
-	const FBox samllBox(FVector(-500.0f, -500.0f, -500.0f), FVector(500.0f, 500.0f, 500.0f));
-	Boxes.Add(FDebugRenderSceneProxy::FDebugBox(samllBox, FColor::Green, FTransform::Identity));
-
-	const FBox box(FVector(-5000.0f, -5000.0f, -5000.0f), FVector(5000.0f, 5000.0f, 5000.0f));
-	Boxes.Add(FDebugRenderSceneProxy::FDebugBox(box, FColor::Red, FTransform::Identity));
+	Boxes = m_data.Boxes;
 }

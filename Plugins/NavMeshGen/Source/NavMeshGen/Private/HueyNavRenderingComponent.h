@@ -4,6 +4,9 @@
 
 #include "HueyNavRenderingComponent.generated.h"
 
+class AHueyNavMesh;
+struct FHueyNavSceneProxyData;
+
 UCLASS()
 class UHueyNavRenderingComponent : public UPrimitiveComponent
 {
@@ -17,4 +20,8 @@ public:
 	//
 	// 렌더링에 포함할지 판정할 때 사용됩니다.
 	virtual FBoxSphereBounds CalcBounds(const FTransform& LocalToWorld) const override;
+
+private:
+	// 렌더링용 데이터를 수집합니다.
+	void _GatherData(const AHueyNavMesh& hueyNavMesh, FHueyNavSceneProxyData& proxyData);
 };
