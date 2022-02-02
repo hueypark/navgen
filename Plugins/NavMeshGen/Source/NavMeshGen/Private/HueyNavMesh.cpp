@@ -53,3 +53,13 @@ const HueyNavHeightfield& AHueyNavMesh::GetHeightField() const
 {
 	return m_heightfield;
 }
+
+void AHueyNavMesh::OnNavMeshGenerationFinished()
+{
+	if (!RenderingComp)
+	{
+		return;
+	}
+
+	RenderingComp->MarkRenderStateDirty();
+}

@@ -26,6 +26,9 @@ public:
 	// 하이트필드를 반환합니다.
 	const HueyNavHeightfield& GetHeightField() const;
 
+	// 네비게이션 메시 생성이 종료될 떄 호출됩니다.
+	virtual void OnNavMeshGenerationFinished();
+
 private:
 	// 하이트필드
 	HueyNavHeightfield m_heightfield;

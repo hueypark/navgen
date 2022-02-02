@@ -52,6 +52,8 @@ bool FHueyNavMeshGenerator::RebuildAll()
 		}
 	}
 
+	m_ownerNavMesh.OnNavMeshGenerationFinished();
+
 	return true;
 }
 
