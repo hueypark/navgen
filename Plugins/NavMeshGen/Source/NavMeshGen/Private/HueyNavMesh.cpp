@@ -2,6 +2,7 @@
 
 #include "AI/NavDataGenerator.h"
 #include "HueyNavMeshGenerator.h"
+#include "HueyNavRenderingComponent.h"
 #include "NavMesh/NavMeshRenderingComponent.h"
 #include "NavigationSystem.h"
 
@@ -35,5 +36,5 @@ void AHueyNavMesh::ConditionalConstructGenerator()
 
 UPrimitiveComponent* AHueyNavMesh::ConstructRenderingComponent()
 {
-	return NewObject<UNavMeshRenderingComponent>(this, TEXT("NavRenderingComp"), RF_Transient);
+	return NewObject<UHueyNavRenderingComponent>(this, TEXT("NavRenderingComp"), RF_Transient);
 }
