@@ -10,7 +10,7 @@ bool GraphTest::RunTest(const FString& Parameters)
 
 	Graph graph;
 
-	std::shared_ptr<Node> node = std::make_shared<Node>(nodeID);
+	std::shared_ptr<Node> node = std::make_shared<Node>(nodeID, 0, 0, 0.0f);
 
 	graph.AddNode(node);
 

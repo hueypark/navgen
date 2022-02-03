@@ -33,6 +33,7 @@ bool FHueyNavMeshGenerator::RebuildAll()
 	float bottom = 0.0f;
 	FVector start(0.0f, 0.0f, top);
 	FVector end(0.0f, 0.0f, bottom);
+	int32 id = 1;
 	for (float x = minX; x <= maxX; x += s_tileSize)
 	{
 		for (float y = minY; y <= maxY; y += s_tileSize)
@@ -44,10 +45,15 @@ bool FHueyNavMeshGenerator::RebuildAll()
 
 			FCollisionShape collisionShape =
 				FCollisionShape::MakeBox(FVector(s_tileSize * 0.5f, s_tileSize * 0.5f, .0f));
+			FCollisionQueryParams queryParams = FCollisionQueryParams::DefaultQueryParam;
+			queryParams.MobilityType = EQueryMobilityType::Static;
 			if (world->SweepSingleByChannel(
-					hitResult, start, end, FQuat::Identity, ECollisionChannel::ECC_WorldStatic, collisionShape))
+					hitResult, start, end, FQuat::Identity, ECollisionChannel::ECC_WorldStatic, collisionShape,
+					queryParams))
 			{
-				m_ownerNavMesh.AddNavData(int32(x), int32(y), hitResult.ImpactPoint.Z);
+				m_ownerNavMesh.AddNavData(id, int32(x), int32(y), hitResult.ImpactPoint.Z);
+
+				++id;
 			}
 		}
 	}
